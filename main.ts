@@ -16,10 +16,7 @@ const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
 mkdirSync(outDir, { recursive: true });
 copyFileSync(source, join(outDir, 'entry.png'));
 
-// Fail loudly if the copy came out truncated: a short write would otherwise
-// reach the gate silently. Source and written sizes must match exactly.
-const written = join(outDir, 'entry.png');
-if (statSync(source).size !== statSync(written).size) {
-  console.error('entry.png copy size mismatch: source and output differ');
+if (statSync(source).size !== statSync(join(outDir, 'entry.png')).size) {
+  console.error('copy verification failed: written file size differs from source');
   process.exit(1);
 }
